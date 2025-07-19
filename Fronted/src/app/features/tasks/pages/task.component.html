@@ -1,0 +1,48 @@
+<h2>Lista de Tareas</h2>
+
+<!-- ---------- Formulario Alta ---------- -->
+<form (ngSubmit)="agregar()" style="margin-bottom:1rem;" #f="ngForm">
+  <input
+    placeholder="Título"
+    type="text"
+    required
+    [(ngModel)]  ="nuevaTarea.titulo"
+    name="titulo"
+  >
+  <input
+    placeholder="Descripción"
+    type="text"
+    [(ngModel)]  ="nuevaTarea.descripcion"
+    name="descripcion"
+  >
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]  ="nuevaTarea.completada"
+      name="completado"
+    >
+    Completada
+  </label>
+  <button type="submit" [disabled]="f.invalid">Agregar</button>
+</form>
+
+<!-- ---------- Lista de tareas ---------- -->
+<ul>
+  <li *ngFor="let tarea of tareas">
+    <!-- toggle -->
+    <input
+      type="checkbox"
+      [(ngModel)]       ="tarea.completada"
+      (change)          ="marcarCambio(tarea)"
+      [ngModelOptions]  ="{ standalone: true }"
+    >
+
+    <!-- texto -->
+    {{ tarea.titulo }} –
+    {{ tarea.completada ? '✅ Completada' : '👨‍💻 Pendiente' }}
+
+    <!-- acciones -->
+    <button *ngIf="tarea._dirty"  (click)="guardarCambio(tarea)">Guardar</button>
+    <button                       (click)="eliminar(tarea)">🗑️</button>
+  </li>
+</ul>
