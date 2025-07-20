@@ -1,48 +1,47 @@
 <h2>Lista de Tareas</h2>
 
-<!-- ---------- Formulario Alta ---------- -->
-<form (ngSubmit)="agregar()" style="margin-bottom:1rem;" #f="ngForm">
-  <input
-    placeholder="Título"
-    type="text"
-    required
-    [(ngModel)]  ="nuevaTarea.titulo"
-    name="titulo"
-  >
-  <input
-    placeholder="Descripción"
-    type="text"
-    [(ngModel)]  ="nuevaTarea.descripcion"
-    name="descripcion"
-  >
+<!-- -------- formulario alta -------- -->
+<form class="add-form" (ngSubmit)="agregarTarea()">
+  <input  type="text"       placeholder="Título"
+          [(ngModel)]="nuevoTitulo"      name="titulo" required />
+
+  <input  type="text"       placeholder="Descripción"
+          [(ngModel)]="nuevaDescripcion" name="descripcion" />
+
   <label>
-    <input
-      type="checkbox"
-      [(ngModel)]  ="nuevaTarea.completada"
-      name="completado"
-    >
+    <input type="checkbox" [(ngModel)]="nuevaCompletada" name="completada" />
     Completada
   </label>
-  <button type="submit" [disabled]="f.invalid">Agregar</button>
+
+  <button type="submit">Agregar</button>
 </form>
 
-<!-- ---------- Lista de tareas ---------- -->
+<!-- -------- lista -------- -->
 <ul>
   <li *ngFor="let tarea of tareas">
-    <!-- toggle -->
-    <input
-      type="checkbox"
-      [(ngModel)]       ="tarea.completada"
-      (change)          ="marcarCambio(tarea)"
-      [ngModelOptions]  ="{ standalone: true }"
-    >
 
-    <!-- texto -->
-    {{ tarea.titulo }} –
-    {{ tarea.completada ? '✅ Completada' : '👨‍💻 Pendiente' }}
+    <!-- checkbox estado -->
+    <input type="checkbox"
+           [checked]="tarea.completada"
+           (change)="toggleCompletada(tarea)" />
 
-    <!-- acciones -->
-    <button *ngIf="tarea._dirty"  (click)="guardarCambio(tarea)">Guardar</button>
-    <button                       (click)="eliminar(tarea)">🗑️</button>
+    <!-- --------- vista normal --------- -->
+    <ng-container *ngIf="editingTaskId !== tarea.id; else editTpl">
+      {{ tarea.titulo }} –
+      {{ tarea.completada ? '✅ Completada' : '👨‍💻 Pendiente' }}
+
+      <button (click)="startEdit(tarea)" title="Editar">✏️</button>
+      <button (click)="eliminarTarea(tarea.id)" title="Eliminar">🗑️</button>
+    </ng-container>
+
+    <!-- --------- modo edición --------- -->
+    <ng-template #editTpl>
+      <input [(ngModel)]="editTitulo"      placeholder="Título" />
+      <input [(ngModel)]="editDescripcion" placeholder="Descripción" />
+
+      <button (click)="saveEdit(tarea)"   title="Guardar">💾</button>
+      <button (click)="cancelEdit()"      title="Cancelar">❌</button>
+    </ng-template>
+
   </li>
 </ul>

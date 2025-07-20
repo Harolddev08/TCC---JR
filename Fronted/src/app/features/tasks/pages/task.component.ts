@@ -1,84 +1,119 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule }   from '@angular/common';
-import { FormsModule }    from '@angular/forms';
-import { Tarea, TareaService } from '../../tasks/services/tarea.service';
-
-interface TareaUI extends Tarea { _dirty?: boolean }
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';          // ← para [(ngModel)]
+import { TareaService, Tarea } from '../services/tarea.service';
 
 @Component({
-  standalone : true,
-  selector   : 'app-task',
+  standalone: true,
+  selector: 'app-task',
+  imports: [CommonModule, FormsModule],
   templateUrl: './task.component.html',
-  styleUrls  : ['./task.component.css'],
-  imports    : [CommonModule, FormsModule]
+  styleUrls: ['./task.component.css']
 })
 export class TaskComponent implements OnInit {
 
-  tareas: TareaUI[] = [];
+  /* ---------- listado de tareas ---------- */
+  tareas: Tarea[] = [];
 
-  /* -------------  Campos del formulario ------------- */
-  nuevaTarea: Partial<Tarea> = {
-    titulo      : '',
-    descripcion : '',
-    completada : false
-  };
+  /* ---------- alta de tarea ---------- */
+  nuevoTitulo      = '';
+  nuevaDescripcion = '';
+  nuevaCompletada  = false;
+
+  /* ---------- edición inline ---------- */
+  editingTaskId: number | null = null;
+  editTitulo      = '';
+  editDescripcion = '';
 
   constructor(private tareaService: TareaService) {}
 
-  /* ------------------------ INIT --------------------- */
-  ngOnInit(): void { this.recargar(); }
-
-  /* -------------------- CRUD ------------------------- */
-  agregar(): void {
-    if (!this.nuevaTarea.titulo?.trim()) { return; }
-
-    // casteamos con “as Tarea” porque el id lo asigna el backend
-    this.tareaService.crearTarea(this.nuevaTarea as Tarea).subscribe({
-      next : (res) => {
-        this.tareas.push(res);          // añade a la lista
-        this.resetForm();               // limpia el form
-      },
-      error: (err) => console.error('Error al crear:', err)
-    });
+  ngOnInit(): void {
+    this.cargarTareas();
   }
 
-  marcarCambio(t: TareaUI): void { t._dirty = true; }
+  /* ---------- helpers ---------- */
 
-  guardarCambio(t: TareaUI): void {
-    const msg = t.completada
-      ? '¿Confirmas que la tarea ya está completada?'
-      : '¿Marcar la tarea como pendiente de nuevo?';
-
-    if (!window.confirm(msg)) {          // cancelar → rollback
-      t.completada = !t.completada;
-      delete t._dirty;
-      return;
-    }
-
-    this.tareaService.actualizarTarea(t).subscribe({
-      next : (res) => { Object.assign(t, res); delete t._dirty; },
-      error: (err) => { console.error(err); t.completada = !t.completada; delete t._dirty; }
-    });
-  }
-
-  eliminar(t: TareaUI): void {
-    if (!window.confirm('¿Eliminar la tarea?')) { return; }
-
-    this.tareaService.eliminarTarea(t.id).subscribe({
-      next : () => this.tareas = this.tareas.filter(x => x.id !== t.id),
-      error: (err) => console.error('Error al eliminar:', err)
-    });
-  }
-
-  /* ------------------- helpers ----------------------- */
-  private recargar(): void {
+  private cargarTareas(): void {
     this.tareaService.obtenerTareas().subscribe({
-      next : (d) => this.tareas = d,
-      error: (e) => console.error(e)
+      next: (res) => (this.tareas = res),
+      error: (err) => console.error('Error al cargar tareas:', err)
     });
   }
 
-  private resetForm(): void {
-    this.nuevaTarea = { titulo:'', descripcion:'', completada:false };
+  /* ---------- crear ---------- */
+
+  agregarTarea(): void {
+    if (!this.nuevoTitulo.trim()) { return; }
+
+    const tarea: Tarea = {
+      id: 0,                      // el backend asigna id
+      titulo: this.nuevoTitulo,
+      descripcion: this.nuevaDescripcion,
+      completada: this.nuevaCompletada
+    };
+
+    this.tareaService.crearTarea(tarea).subscribe({
+      next: (res) => {
+        this.tareas.push(res);
+        this.nuevoTitulo      = '';
+        this.nuevaDescripcion = '';
+        this.nuevaCompletada  = false;
+      },
+      error: (err) => console.error('Error al crear tarea:', err)
+    });
+  }
+
+  /* ---------- toggle completada ---------- */
+
+  toggleCompletada(tarea: Tarea): void {
+    const tareaActualizada: Tarea = { ...tarea, completada: !tarea.completada };
+
+    this.tareaService.actualizarTarea(tareaActualizada).subscribe({
+      next: (res)  => (tarea.completada = res.completada),
+      error: (err) => console.error('Error al actualizar tarea:', err)
+    });
+  }
+
+  /* ---------- eliminar ---------- */
+
+  eliminarTarea(id: number): void {
+    if (!confirm('¿Eliminar esta tarea?')) { return; }
+
+    this.tareaService.eliminarTarea(id).subscribe({
+      next: ()    => (this.tareas = this.tareas.filter(t => t.id !== id)),
+      error: (e)  => console.error('Error al eliminar tarea:', e)
+    });
+  }
+
+  /* ---------- editar ---------- */
+
+  startEdit(t: Tarea): void {
+    this.editingTaskId = t.id;
+    this.editTitulo      = t.titulo;
+    this.editDescripcion = t.descripcion;
+  }
+
+  cancelEdit(): void {
+    this.editingTaskId = null;
+  }
+
+  saveEdit(t: Tarea): void {
+    if (!this.editTitulo.trim()) { return; }
+
+    const tareaActualizada: Tarea = {
+      ...t,
+      titulo: this.editTitulo,
+      descripcion: this.editDescripcion
+    };
+
+    this.tareaService.actualizarTarea(tareaActualizada).subscribe({
+      next: (res) => {
+        // refleja cambios en la lista
+        t.titulo       = res.titulo;
+        t.descripcion  = res.descripcion;
+        this.editingTaskId = null;
+      },
+      error: (err) => console.error('Error al guardar cambios:', err)
+    });
   }
 }
