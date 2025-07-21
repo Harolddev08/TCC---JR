@@ -1,0 +1,174 @@
+/* ===== Tarjeta contenedora ===== */
+.tasks-card {
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    background: var(--mat-card-background, #f6f5f8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .07);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  /* ===== Cabecera ===== */
+  .tasks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .tasks-header span[matBadge] {
+    cursor: default;
+  }
+  
+  /* ===== Formulario alta ===== */
+  .add-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .add-form .flex-1 { flex: 1 1 180px; }
+  .add-form .flex-2 { flex: 2 1 260px; }
+  
+  .add-form .add-check {
+    margin-left: .5rem;
+    white-space: nowrap;
+  }
+  
+  .add-form button[mat-raised-button] {
+    border-radius: 30px;
+    padding: 0 .75rem;
+  }
+  
+  mat-divider {
+    margin: .25rem 0 1rem;
+  }
+  
+  /* ===== Lista ===== */
+  mat-list {
+    padding: 0;
+  }
+  
+  .mat-list-item {
+    padding-left: 0;
+    gap: .5rem;
+    align-items: flex-start;
+    display: flex;
+
+    flex-direction: row;
+    min-height: 56px;
+    padding-block: 8px;
+  }
+  
+  /* 🔵 WRAPPER que organiza info e íconos */
+  .item-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  /* 🔵 Título y descripción */
+  .tarea-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .tarea-titulo {
+    font-weight: 600;
+  }
+  
+  .tarea-desc {
+    font-size: .8125rem;
+    color: var(--gray-600, #6e6e6e);
+  }
+  
+  /* 🔵 Botones y estado */
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+  
+  .estado {
+    font-size: .875rem;
+  }
+  
+  /* Iconos */
+  .mat-list-item button[mat-icon-button] {
+    margin-left: .25rem;
+  }
+  
+  /* 🔵 Completada: tachado */
+  .mat-list-item.done .tarea-titulo {
+    text-decoration: line-through;
+    
+    color: var(--gray-400, #9d9d9d);
+  }
+
+  ::ng-deep .mat-mdc-list-item {
+    display: flex !important;
+    align-items: flex-start;
+    min-height: 120px !important;
+  }
+  
+  .item-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 12px; /* separa del checkbox */
+    flex: 1;
+  }
+  
+  .tarea-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+  
+  .tarea-titulo {
+    font-weight: bold;
+  }
+  
+  .tarea-desc {
+    color: #666;
+    font-size: 14px;
+  }
+  
+  /* ===== Responsive ===== */
+  @media (max-width: 600px) {
+    .add-form {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .add-form .flex-1,
+    .add-form .flex-2 {
+      flex: 1 1 auto;
+    }
+  
+    .estado {
+      width: 100%;
+      margin: 0 0 .25rem;
+    }
+  
+    .item-wrapper {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .actions {
+      align-self: flex-end;
+    }
+  }

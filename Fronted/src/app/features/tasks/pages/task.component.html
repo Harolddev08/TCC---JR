@@ -1,47 +1,74 @@
-<h2>Lista de Tareas</h2>
+<!-- Tarjeta contenedora -->
+<mat-card class="tasks-card">
 
-<!-- -------- formulario alta -------- -->
-<form class="add-form" (ngSubmit)="agregarTarea()">
-  <input  type="text"       placeholder="Título"
-          [(ngModel)]="nuevoTitulo"      name="titulo" required />
+  <!-- Título y filtro -->
+  <div class="tasks-header">
+    <h2>Lista de Tareas</h2>
 
-  <input  type="text"       placeholder="Descripción"
-          [(ngModel)]="nuevaDescripcion" name="descripcion" />
+    <!-- (Opcional) contador rápido -->
+    <span matBadge="{{ tareas.length }}" matBadgeColor="accent"
+          matBadgeSize="small" aria-label="Cantidad de tareas">
+    </span>
+  </div>
 
-  <label>
-    <input type="checkbox" [(ngModel)]="nuevaCompletada" name="completada" />
-    Completada
-  </label>
+  
 
-  <button type="submit">Agregar</button>
-</form>
+  <!-- -------- Alta de tarea -------- -->
+  <form class="add-form" (ngSubmit)="agregarTarea()" #f="ngForm">
 
-<!-- -------- lista -------- -->
-<ul>
-  <li *ngFor="let tarea of tareas">
+    <mat-form-field appearance="outline" class="flex-1">
+      <mat-label>Título</mat-label>
+      <input matInput name="titulo" [(ngModel)]="nuevoTitulo" required />
+    </mat-form-field>
 
-    <!-- checkbox estado -->
-    <input type="checkbox"
-           [checked]="tarea.completada"
-           (change)="toggleCompletada(tarea)" />
+    <mat-form-field appearance="outline" class="flex-2">
+      <mat-label>Descripción</mat-label>
+      <input matInput name="descripcion" [(ngModel)]="nuevaDescripcion" />
+    </mat-form-field>
 
-    <!-- --------- vista normal --------- -->
-    <ng-container *ngIf="editingTaskId !== tarea.id; else editTpl">
-      {{ tarea.titulo }} –
-      {{ tarea.completada ? '✅ Completada' : '👨‍💻 Pendiente' }}
+    <mat-checkbox [(ngModel)]="nuevaCompletada"
+                  name="completada" class="add-check">
+      Completada
+    </mat-checkbox>
 
-      <button (click)="startEdit(tarea)" title="Editar">✏️</button>
-      <button (click)="eliminarTarea(tarea.id)" title="Eliminar">🗑️</button>
-    </ng-container>
+    <button mat-raised-button color="primary"
+            [disabled]="f.invalid">Agregar</button>
+  </form>
 
-    <!-- --------- modo edición --------- -->
-    <ng-template #editTpl>
-      <input [(ngModel)]="editTitulo"      placeholder="Título" />
-      <input [(ngModel)]="editDescripcion" placeholder="Descripción" />
+  <mat-divider></mat-divider>
 
-      <button (click)="saveEdit(tarea)"   title="Guardar">💾</button>
-      <button (click)="cancelEdit()"      title="Cancelar">❌</button>
-    </ng-template>
+  <!-- -------- Lista -------- -->
+  <mat-list dense>
 
-  </li>
-</ul>
+    <mat-list-item *ngFor="let tarea of tareas" [ngClass]="{ done: tarea.completada }">
+      <!-- CHECKBOX A LA IZQUIERDA -->
+      <mat-checkbox
+        [checked]="tarea.completada"
+        (change)="toggleCompletada(tarea)">
+      </mat-checkbox>
+    
+      <!-- CONTENEDOR FLEXIBLE -->
+      <div class="item-content">
+        <div class="tarea-info">
+          <span class="tarea-titulo">{{ tarea.titulo }}</span>
+          <small *ngIf="tarea.descripcion" class="tarea-desc">– {{ tarea.descripcion }}</small>
+        </div>
+    
+        <div class="actions">
+          <span class="estado">
+            {{ tarea.completada ? '✅ Completada' : '👨‍💻 Pendiente' }}
+          </span>
+    
+          <button mat-icon-button (click)="startEdit(tarea)" matTooltip="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+    
+          <button mat-icon-button color="warn" (click)="eliminarTarea(tarea.id)" matTooltip="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-list-item>
+
+  </mat-list>
+</mat-card>

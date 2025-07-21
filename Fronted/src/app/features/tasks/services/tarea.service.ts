@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Tareas, NuevaTarea } from '../models/tarea.model';  
 
 export interface Tarea {
   id:          number;
@@ -16,7 +17,11 @@ export class TareaService {
   constructor(private http: HttpClient) {}
 
   obtenerTareas(): Observable<Tarea[]>         { return this.http.get<Tarea[]>(this.apiUrl); }
-  crearTarea(t: Tarea): Observable<Tarea>      { return this.http.post<Tarea>(this.apiUrl, t); }
+
+  crearTarea(t: NuevaTarea): Observable<Tarea> {  
+    return this.http.post<Tarea>(this.apiUrl, t);
+  }
   actualizarTarea(t: Tarea): Observable<Tarea> { return this.http.put<Tarea>(`${this.apiUrl}/${t.id}`, t); }
+  
   eliminarTarea(id: number): Observable<void>  { return this.http.delete<void>(`${this.apiUrl}/${id}`); }
 }

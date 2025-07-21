@@ -1,0 +1,41 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <div class="login-avatar">
+      <mat-icon>person</mat-icon>
+    </div>
+
+    <h2>Iniciar Sesión</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <!-- Correo -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Correo</mat-label>
+        <input matInput formControlName="correo" type="email" />
+        <mat-icon matSuffix>mail</mat-icon>
+      </mat-form-field>
+
+      <!-- Contraseña -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="contrasena" type="password" />
+        <mat-icon matSuffix>lock</mat-icon>
+      </mat-form-field>
+
+      <!-- Botón -->
+<!-- Botón -->
+<button mat-raised-button
+        color="primary"
+        class="full-width"
+        [disabled]="form.invalid || loading">
+
+  <mat-progress-spinner *ngIf="loading"
+        diameter="20"
+        mode="indeterminate"
+        color="accent">
+  </mat-progress-spinner>
+
+  <span *ngIf="!loading">Ingresar</span>
+</button>
+    </form>
+  </mat-card>
+</div>

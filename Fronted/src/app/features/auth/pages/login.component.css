@@ -1,0 +1,78 @@
+/* ===== Fondo general ===== */
+.login-container{
+    display:flex;justify-content:center;align-items:center;
+    min-height:100vh;
+    background:linear-gradient(160deg,#83a4d4 0%,#b6fbff 100%);
+    padding:1rem;               /* margen lateral en móviles */
+  }
+  
+  /* ===== Tarjeta ===== */
+  .login-card{
+    width:100%;
+    max-width:28rem;             /* 448 px en pantallas grandes   */
+    padding:2.5rem 2rem;
+    border-radius:1.25rem;       /* 20 px */
+    box-shadow:0 4px 20px rgb(0 0 0 / .15);
+    text-align:center;
+    background:#faf9ff;          /* contraste con el gradiente   */
+  }
+  
+  /* ===== Avatar ===== */
+  .login-avatar{                   /* 60 × 60 en desktop */
+    width:60px;height:60px;
+    margin:0 auto 1.5rem;
+    border-radius:50%;
+    background:#1976d2;
+    display:flex;justify-content:center;align-items:center;
+  }
+  .login-avatar mat-icon{color:#fff;font-size:32px;}
+  
+  /* ===== Título ===== */
+  h2{margin:0 0 1.5rem;font:600 1.75rem/1 Poppins, Roboto, sans-serif;}
+  
+  /* ===== Campos ===== */
+  .full-width{width:100%;margin:0 0 1rem;}
+  .mat-form-field-appearance-outline .mat-form-field-flex{
+    border-radius:2rem!important;              /* campos redondos  */
+    padding:.6em 0;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-infix{
+    padding-inline:1.25rem!important;          /* texto separado   */
+  }
+  
+  /* ===== Botón ===== */
+  button.mat-raised-button{
+    border-radius:2rem;height:48px;font-weight:600;letter-spacing:.5px;
+    transition:background .25s;
+  }
+  button.mat-raised-button:hover{background:#125ea3!important}
+  
+  /* ===== Spinner ===== */
+  .spinner-btn{width:20px;height:20px;margin:auto}
+  
+  /* ===== Breakpoints  (💡 cambia solo lo necesario) ===== */
+  @media (max-width:480px){          /* iPhone SE, etc. */
+    .login-card{
+      padding:2rem 1.25rem;
+      max-width:100%;               /* que aproveche todo el ancho */
+    }
+    h2{font-size:1.5rem;}
+    .login-avatar{width:52px;height:52px;margin-bottom:1rem;}
+  }
+  @media (min-width:768px){          /* tablets en modo portrait  */
+    .login-card{max-width:32rem;}    /* un poco más ancha          */
+  }
+  @keyframes fadeInCard {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .login-card {
+    animation: fadeInCard 1150ms ease-out 90ms both;
+  }
