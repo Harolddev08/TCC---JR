@@ -1,0 +1,50 @@
+<mat-card class="dash-wrapper">
+
+  <h1>Panel general</h1>
+
+  <!-- ====== Card: Totales generales ====== -->
+  <mat-card class="kpi-card">
+
+    <h3>Total de tareas</h3>
+    <div class="kpi-big">{{ stats.total }}</div>
+
+    <!-- progreso global -->
+    <mat-progress-bar
+      mode="determinate"
+      [value]="pctCompletas"
+      color="primary">
+    </mat-progress-bar>
+
+    <div class="kpi-legend">
+      <span>✅ Completadas: {{ stats.completas }}</span>
+      <span>👨‍💻 Pendientes: {{ stats.pendientes }}</span>
+    </div>
+  </mat-card>
+
+  <mat-divider class="my-6"></mat-divider>
+
+  <!-- ====== Sub-cards por prioridad ====== -->
+  <div class="priority-grid">
+    <!-- Alta -->
+    <mat-card class="priority-card high">
+      <h4>🔥 Alta</h4>
+      <div class="kpi-small">{{ stats.alta }}</div>
+      <mat-progress-bar mode="determinate" [value]="pctAlta"></mat-progress-bar>
+    </mat-card>
+
+    <!-- Media -->
+    <mat-card class="priority-card medium">
+      <h4>💼 Media</h4>
+      <div class="kpi-small">{{ stats.media }}</div>
+      <mat-progress-bar mode="determinate" [value]="pctMedia"></mat-progress-bar>
+    </mat-card>
+
+    <!-- Baja -->
+    <mat-card class="priority-card low">
+      <h4>📄 Baja</h4>
+      <div class="kpi-small">{{ stats.baja }}</div>
+      <mat-progress-bar mode="determinate" [value]="pctBaja"></mat-progress-bar>
+    </mat-card>
+  </div>
+
+</mat-card>

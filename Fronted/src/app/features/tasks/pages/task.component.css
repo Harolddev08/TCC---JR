@@ -62,14 +62,14 @@
   }
   
   /* 🔵 WRAPPER que organiza info e íconos */
-  .item-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex: 1;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
+.item-wrapper{
+  display:flex;
+  justify-content:space-between;
+   align-items:center;
+   flex:1;
+  gap:1rem;
+  flex-wrap:wrap;
+}
   
   /* 🔵 Título y descripción */
   .tarea-info {
@@ -109,11 +109,10 @@
     
     color: var(--gray-400, #9d9d9d);
   }
-
-  ::ng-deep .mat-mdc-list-item {
-    display: flex !important;
-    align-items: flex-start;
-    min-height: 120px !important;
+  ::ng-deep .mat-mdc-list-item{
+    display:flex!important;
+    align-items:flex-start;
+    min-height:180px!important;
   }
   
   .item-content {

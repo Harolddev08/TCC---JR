@@ -1,3 +1,4 @@
+// src/main/java/com/tcc/Backend/service/TareaService.java
 package com.tcc.Backend.service;
 
 import com.tcc.Backend.model.Tarea;
@@ -10,34 +11,34 @@ import java.util.Optional;
 @Service
 public class TareaService {
 
-    private final TareaRepository tareaRepository;
+    private final TareaRepository repo;
 
-    public TareaService(TareaRepository tareaRepository) {
-        this.tareaRepository = tareaRepository;
-    }
+    public TareaService(TareaRepository repo) { this.repo = repo; }
 
     public List<Tarea> listar() {
-        return tareaRepository.findAll();
+        return repo.findAll();
     }
 
     public Optional<Tarea> obtenerPorId(Long id) {
-        return tareaRepository.findById(id);
+        return repo.findById(id);
     }
 
     public Tarea crear(Tarea tarea) {
-        return tareaRepository.save(tarea);
+        return repo.save(tarea);
+    }
+
+    public Tarea actualizar(Long id, Tarea nueva) {
+        return repo.findById(id).map(t -> {
+            t.setTitulo     (nueva.getTitulo());
+            t.setDescripcion(nueva.getDescripcion());
+            t.setCompletada (nueva.isCompletada());
+            t.setPrioridad  (nueva.getPrioridad());
+            t.setDueDate    (nueva.getDueDate());
+            return repo.save(t);
+        }).orElseThrow();
     }
 
     public void eliminar(Long id) {
-        tareaRepository.deleteById(id);
-    }
-
-    public Tarea actualizar(Long id, Tarea nuevaTarea) {
-        return tareaRepository.findById(id).map(t -> {
-            t.setTitulo(nuevaTarea.getTitulo());
-            t.setDescripcion(nuevaTarea.getDescripcion());
-            t.setCompletada(nuevaTarea.isCompletada());
-            return tareaRepository.save(t);
-        }).orElseThrow();
+        repo.deleteById(id);
     }
 }

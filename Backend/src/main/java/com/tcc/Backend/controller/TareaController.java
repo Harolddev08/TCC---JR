@@ -1,3 +1,4 @@
+// src/main/java/com/tcc/Backend/controller/TareaController.java
 package com.tcc.Backend.controller;
 
 import com.tcc.Backend.model.Tarea;
@@ -12,33 +13,28 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class TareaController {
 
-    private final TareaService tareaService;
+    private final TareaService service;
 
-    public TareaController(TareaService tareaService) {
-        this.tareaService = tareaService;
-    }
+    public TareaController(TareaService service) { this.service = service; }
 
     @GetMapping
-    public List<Tarea> listar() {
-        return tareaService.listar();
-    }
+    public List<Tarea> listar() { return service.listar(); }
 
     @GetMapping("/{id}")
     public ResponseEntity<Tarea> obtener(@PathVariable Long id) {
-        return tareaService.obtenerPorId(id)
+        return service.obtenerPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Tarea crear(@RequestBody Tarea tarea) {
-        return tareaService.crear(tarea);
-    }
+    public Tarea crear(@RequestBody Tarea tarea) { return service.crear(tarea); }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tarea> actualizar(@PathVariable Long id, @RequestBody Tarea tarea) {
+    public ResponseEntity<Tarea> actualizar(@PathVariable Long id,
+                                            @RequestBody Tarea tarea) {
         try {
-            return ResponseEntity.ok(tareaService.actualizar(id, tarea));
+            return ResponseEntity.ok(service.actualizar(id, tarea));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
@@ -46,7 +42,7 @@ public class TareaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        tareaService.eliminar(id);
+        service.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 }

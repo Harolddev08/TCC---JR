@@ -1,0 +1,35 @@
+/* ============ fondo degradado ============ */
+.bg{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:3rem 1rem;
+    background:linear-gradient(180deg,#90caf9 0%,#b3e5fc 100%);
+  }
+  
+  /* ============ tarjeta flotante ============ */
+  .card{
+    width:100%;
+    max-width:920px;
+    background:#f8f7fb;
+    border-radius:16px;
+    padding:2rem;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+  }
+  .logout-btn{
+    position:absolute;
+    top:1rem;
+    right:1rem;
+  }
+  
+  /* ============ botón flotante ============ */
+  .fab-dashboard{
+    position:fixed;
+    right:2rem;
+    bottom:2rem;
+    z-index:1000;
+  }
+  .fab-dashboard.active{         /* cuando ya estás en /dashboard */
+    background:#1565c0;
+  }

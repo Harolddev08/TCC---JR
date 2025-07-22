@@ -1,0 +1,21 @@
+<div class="bg">
+    <div class="card">
+      <!-- BOTÓN logout -->
+      <button mat-icon-button
+              class="logout-btn"
+              matTooltip="Cerrar sesión"
+              (click)="logout()">
+        <mat-icon fontIcon="logout"></mat-icon>
+      </button>
+  
+      <router-outlet></router-outlet>
+    </div>
+  
+    <!-- FAB toggle -->
+    <button mat-fab class="fab-dashboard"
+            [routerLink]="isDashboard ? '/tareas' : '/dashboard'"
+            [matTooltip]="isDashboard ? 'Lista de tareas' : 'Panel general'"
+            [ngClass]="{ active: isDashboard }">
+      <mat-icon>{{ isDashboard ? 'checklist' : 'dashboard' }}</mat-icon>
+    </button>
+  </div>
