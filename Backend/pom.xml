@@ -58,6 +58,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- springdoc 2.x (para Spring Boot 3.x + Jakarta) -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
+		</dependency>
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
