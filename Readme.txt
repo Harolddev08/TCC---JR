@@ -13,6 +13,8 @@ Stack:
 
 ---
 
+HU's: https://trello.com/b/ziI7FTWr/tcc
+
 ## Contenido
 
 1. [Requisitos](#requisitos)
